@@ -1,3 +1,11 @@
+module.exports = {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+  updateContact,
+}
+
 const express = require('express')
 
 const router = express.Router()

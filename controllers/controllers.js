@@ -1,5 +1,5 @@
 import { HttpError } from "../helpers/index.js";
-import Joi from "joi";
+import { addSchema } from "../helpers/index.js";
 
 import {
     listContacts,
@@ -8,12 +8,6 @@ import {
     addContact,
     updateContact,
 } from "../models/contacts.js";
-
-const addSchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    phone: Joi.string().required(),
-});
 
 export const getAll = async (req, res, next) => {
     try {

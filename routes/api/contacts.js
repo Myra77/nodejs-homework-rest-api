@@ -7,16 +7,18 @@ import {
   deleteContact,
 } from "../../controllers/controllers.js";
 
-export const contactsRouter = express.Router()
+import ctrlWrapper from "../../decorators/ctrlWrapper.js";
 
-contactsRouter.get('/', getAll);
+const contactsRouter = express.Router()
 
-contactsRouter.get("/:contactId", getById);
+contactsRouter.get('/', ctrlWrapper(getAll));
 
-contactsRouter.post("/", postNewContact);
+// contactsRouter.get("/:contactId", ctrlWrapper(getById));
 
-contactsRouter.put("/:contactId", putContact);
+// contactsRouter.post("/", ctrlWrapper(postNewContact));
 
-contactsRouter.delete("/:contactId", deleteContact);
+// contactsRouter.put("/:contactId", ctrlWrapper(putContact));
+
+// contactsRouter.delete("/:contactId", ctrlWrapper(deleteContact));
 
 export default contactsRouter;

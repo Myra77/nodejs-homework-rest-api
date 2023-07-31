@@ -1,71 +1,56 @@
+import Contact from "../models/contacts.js";
+
 import { HttpError } from "../helpers/index.js";
-import { addSchema } from "../helpers/index.js";
+import { addSchema, contactUpdateFavoriteSchema } from "../helpers/index.js";
 
-import {
-    listContacts,
-    getContactById,
-    removeContact,
-    addContact,
-    updateContact,
-} from "../models/contacts.js";
-
-export const getAll = async (req, res, next) => {
-    try {
-        const data = await listContacts();
-        res.json(data);
-    } catch (error) {
-        next(error);
-    }
+export const getAll = async (req, res) => {
+    const result = await Contact.find({});
+    res.json(result);
 };
 
-export const getById = async (req, res, next) => {
-    try {
-        const id = req.params.contactId;
-        const result = await getContactById(id);
-        if (!result) {
-            throw HttpError(404, `Contact with Id: ${id} not found`);
-        }
-        res.json(result);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const postNewContact = async (req, res, next) => {
-    try {
-        const { error } = addSchema.validate(req.body);
-        if (error) {
-        throw HttpError(400, error.message);
-        }
-        const data = await addContact(req.body);
-        res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const deleteContact = async (req, res, next) => {
+export const getById = async (req, res) => {
     const id = req.params.contactId;
-    try {
-        const result = await removeContact(id);
+    const result = await Contact.findById(id);
+    if (!result) {
+        throw HttpError(404, `Contact with Id: ${id} not found`);
+    }
+    res.json(result);
+};
+
+export const postNewContact = async (req, res) => {
+    const { error } = addSchema.validate(req.body);
+    if (error) {
+        throw HttpError(400, error.message);
+    }
+    const data = await Contact.create(req.body);
+    res.status(201).json(data);
+};
+
+export const deleteContact = async (req, res) => {
+    const id = req.params.contactId;
+        const result = await Contact.deleteOne({ _id: id });
         if (!result) return HttpError(404, "Not found");
         return res.json({ message: "contact deleted" });
-    } catch (error) {
-        next(error);
-    }
 };
 
-export const putContact = async (req, res, next) => {
+export const putContact = async (req, res) => {
     const id = req.params.contactId;
-    try {
         const { error } = addSchema.validate(req.body);
         if (error) 
             throw HttpError(400, "missing fields");
-        const result = await updateContact(id, req.body);
+        const result = await Contact.findByIdAndUpdate({ _id: id }, req.body, {
+            new: true,
+        });
         if (!result) throw HttpError(404, "Not found");
         return res.json(result);
-    } catch (error) {
-        next(error);
-    }
 };
 
+export const updateStatusContact = async (req, res) => {
+    const id = req.params.contactId;
+    const { error } = contactUpdateFavoriteSchema.validate(req.body);
+    const result = await Contact.findByIdAndUpdate(id, req.body, {
+        new: true,
+    });
+    if (error) throw HttpError(400, "missing field favorite");
+    return res.json(result);
+};

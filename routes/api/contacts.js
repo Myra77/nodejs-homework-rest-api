@@ -8,11 +8,11 @@ import {
   updateStatusContact,
 } from "../../controllers/controllers.js";
 
-import ctrlWrapper from "../../decorators/ctrlWrapper.js";
-import { isValidId } from "../../middlewares/IsValidId.js";
-import { validateBody } from "../../middlewares/validateBody.js";
-import { addSchema, contactUpdateFavoriteSchema } from "../../helpers/schema.js";
-import { authenticate } from "../../middlewares/authenticate.js";
+import { ctrlWrapper } from "../../decorators/index.js";
+import { isValidId } from "../../middlewares/index.js";
+import { validateBody } from "../../middlewares/index.js";
+import { addSchema, contactUpdateFavoriteSchema } from "../../helpers/index.js";
+import { authenticate } from "../../middlewares/index.js";
 
 export const contactsRouter = express.Router()
 

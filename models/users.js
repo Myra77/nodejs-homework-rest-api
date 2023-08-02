@@ -1,8 +1,8 @@
 import {Schema, model } from "mongoose";
-import { handleSaveError, handleUpdateValidate } from "./hooks.js";
+import { handleSaveError, handleUpdateValidate } from "./index.js";
 
-import { emailRegexp } from "../constants/user-constants.js";
-
+// import { emailRegexp } from "../constants/user-constants.js";
+import { userSubscriptionsEnum } from "../constants/userSubscriptionsEnum.js";
 const userSchema = new Schema({
     password: {
         type: String,
@@ -15,8 +15,8 @@ const userSchema = new Schema({
     },
     subscription: {
         type: String,
-        enum: ["starter", "pro", "business"],
-        default: "starter"
+        enum: Object.values(userSubscriptionsEnum),
+        default: userSubscriptionsEnum.STARTER
     },
     token: {
         type: String,

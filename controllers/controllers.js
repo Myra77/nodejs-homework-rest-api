@@ -1,4 +1,4 @@
-import Contact from "../models/contacts.js";
+import Contact from "../models/index.js";
 
 import { HttpError } from "../helpers/index.js";
 import { addSchema, contactUpdateFavoriteSchema } from "../helpers/index.js";

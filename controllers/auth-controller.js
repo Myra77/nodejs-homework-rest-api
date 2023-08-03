@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { User } from "../../models/index.js";
-import { HttpError } from "../../helpers/index.js";
-import { ctrlWrapper } from "../../decorators/index.js";
+import { User } from "../models/index.js"
+import { HttpError } from "../helpers/index.js";
+import { ctrlWrapper } from "../decorators/index.js";
 
 import dotenv from "dotenv";
 

@@ -1,8 +1,8 @@
 import {Schema, model } from "mongoose";
 import { handleSaveError, handleUpdateValidate } from "./index.js";
 
-// import { emailRegexp } from "../constants/user-constants.js";
-import { userSubscriptionsEnum } from "../constants/userSubscriptionsEnum.js";
+// import { emailRegexp } from "../constants/index.js";
+import { userSubscriptionsEnum } from "../constants/index.js";
 const userSchema = new Schema({
     password: {
         type: String,

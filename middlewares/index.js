@@ -1,3 +1,3 @@
-export { authenticate } from "./authenticate";
-export { isValidId } from "./isValidId";
-export { validateBody } from "./validateBody";
+export { authenticate } from "./authenticate.js";
+export { isValidId } from "./isValidId.js";
+export { validateBody } from "./validateBody.js";

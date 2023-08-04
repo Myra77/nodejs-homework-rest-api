@@ -8,9 +8,8 @@ export const getAll = async (req, res) => {
     const { favorite, page = 1, limit = 5 } = req.query;
     const skip = (page - 1) * limit;
     if (favorite) {
-        const result = await Contact.find({ owner, favorite: true }).populate(
-        "name email phone favorite"
-        );
+        const result = await Contact.find({ owner}, "favorite: true" )
+        .populate("owner", "name email phone favorite");
         return res.json(result);
     }
     const result = await Contact.find({ owner }, "", { skip, limit }).populate(

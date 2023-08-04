@@ -6,8 +6,10 @@ import { ctrlWrapper } from "../decorators/index.js";
 
 import dotenv from "dotenv";
 
+// console.log(process.env.JWT_SECRET);
+
 dotenv.config();
-const { SECRET_KEY } = process.env;
+const { JWT_SECRET } = process.env;
 
 
 const signup = async (req, res) => {
@@ -39,7 +41,7 @@ const signin = async(req, res) => {
         const payload = {
             id: user._id,
     };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
     await User.findOneAndUpdate({ _id: user._id }, { token });
     res.json({
         token,
@@ -49,14 +51,16 @@ const signin = async(req, res) => {
 
 const signout = async (req, res) => {
     const { _id } = req.user;
-    const user = await User.findByIdAndUpdate(_id, { token: null });
-    if (!user) throw HttpError(401);
-    res.status(204).end();
+    await User.findByIdAndUpdate(_id, { token: "" });
+    // if (!user) throw HttpError(401);
+    res.json({
+        message: "Signout success"
+    })
 };
 
 const getCurrent = async (req, res) => {
     const { email, subscription } = req.user;
-    res.json({ email, subscription });
+    res.json({ email, subscription, });
 };
 
 const updateSubscription = async (req, res) => {

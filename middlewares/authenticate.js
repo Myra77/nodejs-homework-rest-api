@@ -5,19 +5,21 @@ import { HttpError } from "../helpers/index.js";
 import { User } from "../models/index.js";
 
 dotenv.config();
-const { SECRET_KEY } = process.env;
+const { JWT_SECRET  } = process.env;
 
 export const authenticate = async (req, res, next) => {
     const { authorization = "" } = req.headers;
     const [bearer, token] = authorization.split(" ");
-    if (bearer !== "Bearer" || !token) next(HttpError(401));
+    if (bearer !== "Bearer" || !token) throw HttpError(401);
     try {
-        const { id } = jwt.verify(token, SECRET_KEY);
+        const { id } = jwt.verify(token, JWT_SECRET );
         const user = await User.findById(id);
-        if (!user || !user.token || token !== user.token) next(HttpError(401));
+        if (!user || !user.token || token !== user.token) {
+            throw HttpError(401);
+        }
         req.user = user;
         next();
     } catch {
-        next(HttpError(401));
+        throw HttpError(401);
     }
 };

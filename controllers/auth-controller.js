@@ -1,12 +1,14 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/index.js"
-import { HttpError } from "../helpers/index.js";
+import { HttpError, cloudinary } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 import dotenv from "dotenv";
-
-// console.log(process.env.JWT_SECRET);
+import fs from "fs/promises";
+import path from "path";
+import gravatar from "gravatar";
+// import Jimp from "jimp";
 
 dotenv.config();
 const { JWT_SECRET } = process.env;
@@ -19,7 +21,8 @@ const signup = async (req, res) => {
         throw HttpError(409, "Email in use");
     }
     const hashPassword = await bcrypt.hash(password, 10);  
-    const newUser = await User.create({ ...req.body, password: hashPassword});
+    const avatarURL = gravatar.url(email);
+    const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL});
 
     res.status(201).json({
         name: newUser.name,
@@ -70,10 +73,28 @@ const updateSubscription = async (req, res) => {
     res.json({ message: `Status was updated to ${subscription}` });
 };
 
+const updateAvatar = async (req, res) => {
+    try {
+        const { path } = req.file;
+        const { _id } = req.user;
+        const { url: avatarURL } = await cloudinary.uploader.upload(path, {
+            folder: "avatars",
+        });
+        await User.findByIdAndUpdate(_id, { avatarURL });
+        fs.unlink(path);
+        res.json({ avatarURL });
+    }
+    catch(error) {
+        fs.unlink(path);
+        throw error;
+    }
+};
+
 export default {
     signup: ctrlWrapper(signup),
     signin: ctrlWrapper(signin),
     signout: ctrlWrapper(signout),
     getCurrent: ctrlWrapper(getCurrent),
     updateSubscription: ctrlWrapper(updateSubscription),
+    updateAvatar: ctrlWrapper(updateAvatar),
 };

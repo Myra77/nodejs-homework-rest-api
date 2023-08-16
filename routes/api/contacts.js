@@ -9,10 +9,8 @@ import {
 } from "../../controllers/controllers.js";
 
 import { ctrlWrapper } from "../../decorators/index.js";
-import { isValidId } from "../../middlewares/index.js";
-import { validateBody } from "../../middlewares/index.js";
+import { authenticate, isValidId, validateBody } from "../../middlewares/index.js";
 import { addSchema, contactUpdateFavoriteSchema } from "../../helpers/index.js";
-import { authenticate } from "../../middlewares/index.js";
 
 export const contactsRouter = express.Router()
 

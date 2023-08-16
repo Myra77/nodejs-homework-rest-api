@@ -1,8 +1,7 @@
 import express  from "express";
 import authController from "../../controllers/auth-controller.js";
 import usersSchemas from "../../schemas/users-schemas.js";
-import { validateBody } from "../../middlewares/index.js";
-import { authenticate } from "../../middlewares/index.js";
+import { validateBody, authenticate, upload } from "../../middlewares/index.js";
 
 export const authRouter = express.Router();
 
@@ -15,3 +14,5 @@ authRouter.post("/signout", authenticate, authController.signout);
 authRouter.get("/current", authenticate, authController.getCurrent);
 
 authRouter.patch("/",validateBody(usersSchemas.userSubscriptionSchema), authenticate, authController.updateSubscription);
+
+authRouter.patch("/avatars", authenticate, upload.single("avatar"), authController.updateAvatar);

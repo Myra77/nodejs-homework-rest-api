@@ -23,7 +23,9 @@ const userSchema = new Schema({
         default: null,
     },
     avatarURL: { 
-        type: String, required: [true, "Set avatar for user"] 
+        type: { String, required: [true, "Set avatar for user"]},
+        verify: { type: Boolean, default: false },
+        verificationCode: { type: String, default: "" },
     },
 }, {versionKey: false, timestamps: true});
 

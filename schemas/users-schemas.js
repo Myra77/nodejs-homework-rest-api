@@ -23,8 +23,13 @@ const userSubscriptionSchema = Joi.object({
         .required(),
 });
 
+const userEmailSchema = Joi.object({
+    email: Joi.string().required().pattern(emailRegexp),
+});
+
 export default {
     userSignupSchema,
     userSigninSchema,
     userSubscriptionSchema,
+    userEmailSchema,
 };
